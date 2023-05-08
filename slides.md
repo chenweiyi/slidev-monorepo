@@ -13,86 +13,102 @@ drawings:
   persist: false
 transition: slide-left
 css: unocss
-title: Welcome to Slidev
+title: Learn Monorepo 
 ---
 
-# Welcome to Slidev111
+# Learn Monorepo
 
-Presentation slides for developers111
+---
+transition: slide-up
 
-<div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page2233 <carbon:arrow-right class="inline"/>
-  </span>
-</div>
+layout: center
+---
 
-<div class="abs-br m-6 flex gap-2">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub"
-    class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
-  </a>
-</div>
+<Toc />
 
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
+<style>
+  .slidev-layout {
+    :deep(.my-auto) {
+      transform: scale(0.4);
+    }
+  }
+
+</style>
+
+---
+transition: slide-up 
+layout: image-right
+image: https://source.unsplash.com/collection/94734566/1920x1080
+---
+
+# 是什么🙋‍♀️？
+
+<br/>
+
+- 定义：在版本控制系统中，monorepo（“mono”的意思是“单一”，“repo”是“存储库”的缩写）是一种软件开发策略，其中多个项目的代码存储在同一个存储库中。这种做法至少可以追溯到 2000 年代初，当时它通常被称为共享代码库。 Google、Meta、Microsoft 都采用非常大的 monorepos，具有不同的策略来扩展具有大量代码和日常更改的构建系统和版本控制软件。
+
+- 对比：和 Monorepo 对立的是传统的 Polyrepo 模式，每个项目对应一个单独的仓库来分散管理。
 
 ---
 transition: fade-out
 ---
 
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - theme can be shared and used with npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embedding Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export into PDF, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - anything possible on a webpage
+# 为什么🤔？
 
 <br>
+
+要说明为什么要用 Monorepo 那就要对比一下 Polyrepo 啦。
+
+<div grid="~ cols-2 gap-8" mt-10>
+<div>
+
+<img src="https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ba8dbd7b42ff4f57b41e51c1716df5fd~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?" />
+
+</div>
+<div>
+
+<img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/45503aa18d984cbfab42ebf7430c646e~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?">
+
+</div>
+</div>
+
+---
+transition: fade-out
+
+level: 2
+---
+
+# Monorepo 的组织方式
+
 <br>
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+Monorepo的代码组织方式如下：
 
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/guide/syntax#embedded-styles
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
-<!--
-Here is another comment.
--->
-
----
-layout: default
----
-
-# Table of contents
-
-```
-<Toc minDepth="1" maxDepth="5"></Toc>
+```markdown
+├── packages
+|   ├── pkg1
+|   |   ├── package.json
+|   ├── pkg2
+|   |   ├── package.json
+├── package.json
 ```
 
-<Toc></Toc>
+`packages`目录下(也可以叫其他名字)存放多个子项目，每个子项目都有自己的`package.json`文件，用来管理子包。
+
+
+---
+transition: fade-out
+
+level: 2
+---
+
+# Polyrepo 的弊端
+
+- 代码重复: 容易导致代码重复，主要是因为不同的项目都有自己的独立代码仓库。工具类组件，lint类，ts类，公共配置类都有大量的冗余。
+- 版本管理：当不同的仓库有依赖关系时，会有依赖管理的问题，必须非常小心的处理依赖的版本和代码是否一致。
+- 工具混乱：每个项目都有自己的启动，构建，测试，发布命令，有记忆负担。CI、CD 流程很难将多个仓库组合到一起去，测试也比较难处理。
+- 代码管理：每个项目的代码管理工具不一致，npm, yarn, pnpm各种类型，维护困难。且每个项目代码提交在各自项目内，Code Review比较困难。
+- 代码共享：试想如果需要多个项目需要共享一套配置应该如何实现。
 
 ---
 transition: slide-up
@@ -100,339 +116,49 @@ transition: slide-up
 level: 2
 ---
 
-# Navigation
+# Monorepo 的优势
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/navigation.html)
-
-### Keyboard Shortcuts
-
-|     |     |
-| --- | --- |
-| <kbd>right</kbd> / <kbd>space</kbd>| next animation or slide |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd> | previous slide |
-| <kbd>down</kbd> | next slide |
-
-<!-- https://sli.dev/guide/animations.html#click-animations -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+- 易于代码复用: 类似的功能或通信协议可以抽象到共享库中，并直接包含在项目中，而无需依赖包管理器。
+- 简单依赖管理: 在多个项目依赖于第三方依赖项的多存储库环境中，可能会多次下载或构建该依赖项。在 monorepo 中，可以轻松优化构建，因为引用的依赖项都存在于同一个代码库中
+- 方便统一构建: Monorepo 的一个重要特点是可以共用一套构建系统和工具链进行构建和部署，提升了构建的效率。
+- 方便集中管理: Monorepo 架构中，不同的应用程序都在同一个代码库中，方便管理和监控。这一点非常重要，特别是在需要同时对多个版本进行修改和维护的情况下。
+- 问题快速定位: 由于所有的代码都在同一个代码库中进行开发，debugger 可以很快找出问题所在的代码文件和行数，便于开发人员调试问题。
 
 ---
-layout: image-right
-image: https://source.unsplash.com/collection/94734566/1920x1080
+transition: fade-out
 ---
 
-# Code
+# 怎么用🤩？
 
-Use code snippets and get the highlighting directly![^1]
+在回答怎么用之前，我们先来看一下目前比较主流的实现monorepo的方式。
 
-```ts {all|2|1-6|9|all}
-interface User {
-  id: number
-  firstName: string
-  lastName: string
-  role: string
-}
-
-function updateUser(id: number, update: User) {
-  const user = getUser(id)
-  const newUser = { ...user, ...update }
-  saveUser(id, newUser)
-}
-```
-
-<arrow v-click="3" x1="400" y1="420" x2="230" y2="330" color="#564" width="3" arrowSize="1" />
-
-[^1]: [Learn More](https://sli.dev/guide/syntax.html#line-highlighting)
-
-<style>
-.footnotes-sep {
-  @apply mt-20 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
+- 🍏 Lerna - 应用比较广泛的monorepo方式，有很多开源项目使用lerna作为monorepo，但目前已被Nx接管维护。
+- 🍎 pnpm - pnpm是目前比较流行的包管理器，它解决了依赖重复下载和幽灵依赖的问题，同时它也提出了自己的monorepo方案。
+- 🍐 Nx - 作者是前Google工程师，团队成员有许多大厂成员，按官方叙述，Nx 吸收了许多 Google、Meta 内部 Monorepo 方案的优点。
+- 🍊 Turborepo - 2021 年的新起之秀，原是个人项目，后被 Vercel 收购。我个人认为这是 Vercel 在前端工程中的进一步开疆拓土，现在你的框架、仓库管理、部署都可以只靠 Vercel 完成了。
+- 🍋 Rush - 微软开源的 Monorepo 方案，我个人没有做过比较深入的了解，这里不做评论。一些企业级的解决方案，如 Google 的 Bazel、Gradle 这种，这些和前端的关系不是太大，上手成本也较高，这里同样不做评论。
 
 ---
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>` and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
+src: ./pages/lerna.md
+hide: false
+---
 
 
 ---
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="-t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/themes/use.html) and
-check out the [Awesome Themes Gallery](https://sli.dev/themes/gallery.html).
-
----
-preload: false
----
-
-# Animations
-
-Animations are powered by [@vueuse/motion](https://motion.vueuse.org/).
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }">
-  Slidev
-</div>
-```
-
-<div class="w-60 relative mt-6">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-square.png"
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-circle.png"
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute top-0 left-0 right-0 bottom-0"
-      src="https://sli.dev/logo-triangle.png"
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 40, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn More](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# LaTeX
-
-LaTeX is supported out-of-box powered by [KaTeX](https://katex.org/).
-
-<br>
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$
-\begin{array}{c}
-
-\nabla \times \vec{\mathbf{B}} -\, \frac1c\, \frac{\partial\vec{\mathbf{E}}}{\partial t} &
-= \frac{4\pi}{c}\vec{\mathbf{j}}    \nabla \cdot \vec{\mathbf{E}} & = 4 \pi \rho \\
-
-\nabla \times \vec{\mathbf{E}}\, +\, \frac1c\, \frac{\partial\vec{\mathbf{B}}}{\partial t} & = \vec{\mathbf{0}} \\
-
-\nabla \cdot \vec{\mathbf{B}} & = 0
-
-\end{array}
-$$
-
-<br>
-
-[Learn more](https://sli.dev/guide/syntax#latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-3 gap-10 pt-4 -mb-6">
-
-```mermaid {scale: 0.5}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectivness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-[Learn More](https://sli.dev/guide/syntax.html#diagrams)
-
----
-src: ./pages/multiple-entries.md
+src: ./pages/pnpm.md
 hide: false
 ---
 
 ---
-layout: center
-class: text-center
+transition: fade-out
 ---
+# 参考文档
 
-# Learn More
+<br/>
 
-[Documentations](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/showcases.html)
+- [为什么越来越多的项目选择 Monorepo？](https://juejin.cn/post/7207743145999368229)
+- [从构建到发布：Monorepo 的最佳实践](https://juejin.cn/post/7210310775276716092)
+- [pnpm](https://www.pnpm.cn/)
+- [lerna中文](https://www.lernajs.cn/)
+- [lerna](https://lerna.js.org/)
 
----
-layout: end
----
